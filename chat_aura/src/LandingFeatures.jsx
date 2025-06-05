@@ -1,9 +1,10 @@
 import React from "react";
 
-// PUBLIC_INTERFACE
 /**
- * Features section for the TalkBuddy landing page.
- * Renders a responsive grid of feature cards with icons.
+ * PUBLIC_INTERFACE
+ * Feature section for TalkBuddy landing page.
+ * Renders a grid of visually-strong feature cards (icon, title, description).
+ * All layout/styling is controlled by landing.css.
  */
 const features = [
   {

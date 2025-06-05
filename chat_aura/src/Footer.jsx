@@ -1,7 +1,7 @@
 import React from "react";
 
-// PUBLIC_INTERFACE
 /**
+ * PUBLIC_INTERFACE
  * Footer component for the TalkBuddy landing page.
  * Semantic, responsive, with smooth theme-state coloring and transition.
  */
