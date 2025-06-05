@@ -1,9 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@700&family=Raleway:wght@400;600&display=swap');
+
 :root {
-  --base-light: #00ffff;
-  --base-dark: #00008b;
-  --text-color: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --border-color: rgba(255, 255, 255, 0.1);
+  /* Brand Colors (will be overridden by theme context) */
+  --base-light: #4F8CFF;
+  --base-dark: #23272F;
+  --accent: #FFD166;
+  --text-color: #23272F;
+  --text-secondary: #555;
+  --border-color: rgba(23, 8, 2, 0.08);
+  --shadow-main: 0 6px 28px 0 rgba(90,110,180,0.18);
+  --shadow-card: 0 4px 18px 0 rgba(80,119,170,0.14);
+  --card-bg: #fff;
+  --footer-bg: #eae6de;
+  --footer-color: #23272F;
+  --transition-main: background 0.48s, color 0.38s, box-shadow 0.29s, border 0.19s;
+  --transition-footer: background 0.44s, color 0.38s;
+}
+
+[data-theme="dark"] {
+  --base-light: #FFD166;
+  --base-dark: #11141b;
+  --accent: #FFD166;
+  --text-color: #fff;
+  --text-secondary: rgba(255,255,255,0.78);
+  --border-color: rgba(255,255,255,0.13);
+  --card-bg: #171c2c;
+  --footer-bg: #181B23;
+  --footer-color: #FFD166;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', 'Montserrat', 'Raleway', 'Inter', 'Roboto', sans-serif;
+  background: var(--base-dark, #23272F);
+  color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  transition: var(--transition-main);
 }
 
 body {
