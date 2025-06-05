@@ -86,10 +86,13 @@ export default function NavBar() {
           ))}
         </ul>
 
-        {/* Theme Toggle Switch - custom animated & accessible */}
+        {/* Theme Toggle Switch - modern animated custom slide toggle */}
         <div className="tb-theme-toggle-switch-container">
           <div
-            className={`tb-theme-toggle-switch tb-theme-toggle-switch--custom${theme === "dark" ? " is-dark" : " is-light"}`}
+            className={
+              "tb-theme-toggle-switch--custom" +
+              (theme === "dark" ? " is-dark" : " is-light")
+            }
             role="switch"
             aria-checked={theme === "dark"}
             aria-label={
@@ -98,22 +101,21 @@ export default function NavBar() {
                 : "Switch to dark mode"
             }
             tabIndex={0}
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            onClick={handleThemeToggle}
             onKeyDown={e => {
               if (e.key === " " || e.key === "Enter") {
                 e.preventDefault();
-                setTheme(theme === "dark" ? "light" : "dark");
+                handleThemeToggle();
               }
             }}
             style={{ outline: "none" }}
           >
-            {/* Track & knob - dark and light icons animate inside */}
-            <div className="tb-switch-track">
+            <div className="tb-switch-track" aria-hidden="true">
               <div className="tb-switch-knob">
                 <span className="tb-switch-icon" aria-hidden="true">
-                  {/* Simple CSS sun/moon icon */}
+                  {/* Icon in knob animates with theme */}
                   {theme === "dark" ? (
-                    // Moon SVG
+                    // Modern moon SVG for dark
                     <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
                       <path
                         d="M13.1 11.97A5.5 5.5 0 018.36 4.8a.3.3 0 00-.34-.42A7 7 0 1017 14.34a.3.3 0 00-.41-.33 5.47 5.47 0 01-3.49-2.04z"
@@ -121,7 +123,7 @@ export default function NavBar() {
                       />
                     </svg>
                   ) : (
-                    // Sun SVG
+                    // Modern sun SVG for light
                     <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
                       <circle cx="9" cy="9" r="4" fill="#FFD166"/>
                       <g stroke="#FFD166" strokeWidth="1.2" strokeLinecap="round">
