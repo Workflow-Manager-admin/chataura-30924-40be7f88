@@ -166,28 +166,28 @@ export default function NavBar() {
               onKeyDown={handleSettingsKeyDown}
               type="button"
             >
-              {/* Gear icon SVG */}
+              {/* Unambiguous Gear Icon SVG for Settings */}
               <span className="tb-settings-gear" aria-hidden="true">
-                <svg width="23" height="23" viewBox="0 0 23 23" fill="none">
-                  <g
-                    stroke={theme === "dark" ? "#FFD166" : "#4F8CFF"}
-                    strokeWidth="1.48"
-                    strokeLinecap="round"
-                  >
+                <svg
+                  width="23"
+                  height="23"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                  focusable="false"
+                  role="img"
+                >
+                  <title>Settings</title>
+                  <g stroke={theme === "dark" ? "#FFD166" : "#4F8CFF"} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
                     <circle
-                      cx="11.5"
-                      cy="11.5"
-                      r="3.5"
+                      cx="12"
+                      cy="12"
+                      r="3.2"
                       fill={theme === "dark" ? "#23272F" : "#fff"}
                     />
-                    <path d="M11.5 2v2.2"/>
-                    <path d="M11.5 21v-2.2"/>
-                    <path d="M21 11.5h-2.2"/>
-                    <path d="M2 11.5h2.2"/>
-                    <path d="M17.3 5.7l-1.5 1.5"/>
-                    <path d="M5.7 5.7l1.5 1.5"/>
-                    <path d="M17.3 17.3l-1.5-1.5"/>
-                    <path d="M5.7 17.3l1.5-1.5"/>
+                    <path d="
+                      M19.4 13.05c.04-.34.06-.68.06-1.05s-.02-.71-.06-1.05l2-1.56a.51.51 0 00.12-.65l-1.9-3.3a.51.51 0 00-.61-.24l-2.35.95a7.11 7.11 0 00-1.82-1.05l-.36-2.46A.5.5 0 0014 2.5h-4a.5.5 0 00-.5.43l-.36 2.46a6.66 6.66 0 00-1.82 1.05l-2.35-.95a.51.51 0 00-.61.24l-1.9 3.3a.51.51 0 00.12.65l2 1.56c-.04.34-.06.68-.06 1.05s.02.71.06 1.05l-2 1.56a.51.51 0 00-.12.65l1.9 3.3c.13.23.39.31.61.24l2.35-.95c.56.43 1.18.79 1.82 1.05l.36 2.46A.5.5 0 0010 21.5h4c.25 0 .46-.18.5-.43l.36-2.46c.64-.26 1.25-.63 1.82-1.05l2.35.95c.22.09.48 0 .61-.24l1.9-3.3a.51.51 0 00-.12-.65l-2-1.56z
+                    "/>
                   </g>
                 </svg>
               </span>
