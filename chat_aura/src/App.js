@@ -97,7 +97,7 @@ export function ThemeProvider({ children }) {
 function App() {
   return (
     <ThemeProvider>
-      <Router>
+      <BrowserRouter>
         <Routes>
           {/* Chat page at /chat */}
           <Route path="/chat" element={<ChatPage />} />
@@ -116,7 +116,7 @@ function App() {
             }
           />
         </Routes>
-      </Router>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }
