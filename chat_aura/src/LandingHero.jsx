@@ -1,8 +1,10 @@
 import React from "react";
 
-// PUBLIC_INTERFACE
 /**
- * Hero section for TalkBuddy landing page, centered layout and modern style.
+ * PUBLIC_INTERFACE
+ * Hero section for TalkBuddy landing page.
+ * This section features a vertically and horizontally centered layout, strong modern gradient, clear subtitle/title/button, and an animated chat SVG.
+ * All layout and style are controlled with `landing.css` and theme vars.
  */
 export default function LandingHero() {
   return (
