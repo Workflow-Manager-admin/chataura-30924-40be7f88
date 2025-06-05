@@ -100,18 +100,24 @@
   width: 18px;
   height: 18px;
   line-height: 0;
-  transition: opacity 0.18s cubic-bezier(.54,.18,.3,1),
-    transform 0.18s cubic-bezier(.74,.18,.3,1);
+  transition: 
+    opacity 0.18s cubic-bezier(.54,.18,.3,1),
+    transform 0.18s cubic-bezier(.74,.18,.3,1),
+    filter 0.16s;
+  will-change: opacity, transform, filter;
+  filter: drop-shadow(0 0 2.7px #FFD16640);
 }
 .tb-theme-toggle-switch--custom.is-dark .tb-switch-icon {
-  /* Moon slides up slightly */
+  /* Moon icon: slides up, yellow, glows slightly */
   opacity: 1;
-  transform: translateY(-1.5px) scale(1.04);
+  transform: translateY(-2.2px) scale(1.17) rotate(-3deg);
+  filter: drop-shadow(0 0 4.5px #FFD166cc);
 }
 .tb-theme-toggle-switch--custom.is-light .tb-switch-icon {
-  /* Sun slides down slightly */
+  /* Sun icon: slides down, full yellow, soft glow */
   opacity: 1;
-  transform: translateY(1.5px) scale(1.04);
+  transform: translateY(2.2px) scale(1.13) rotate(2deg);
+  filter: drop-shadow(0 0 4px #FFD166aa);
 }
 
 /* Mode label ("Light"/"Dark") next to toggle */
