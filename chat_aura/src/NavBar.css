@@ -135,16 +135,24 @@
   filter: drop-shadow(0 0 2.7px #FFD16640);
 }
 .tb-theme-toggle-switch--custom.is-dark .tb-switch-icon {
-  /* Moon icon: slides up, yellow, glows slightly */
+  /* Moon icon: slides up, yellow, glows slightly, add soft enlarge on transition */
   opacity: 1;
-  transform: translateY(-2.2px) scale(1.17) rotate(-3deg);
-  filter: drop-shadow(0 0 4.5px #FFD166cc);
+  transform: translateY(-2.2px) scale(1.21) rotate(-3deg);
+  filter: drop-shadow(0 0 6.6px #FFD166cc);
+  transition: 
+    opacity 0.21s cubic-bezier(.54,.18,.3,1),
+    transform 0.29s cubic-bezier(.82,.18,.3,1.11),
+    filter 0.20s;
 }
 .tb-theme-toggle-switch--custom.is-light .tb-switch-icon {
-  /* Sun icon: slides down, full yellow, soft glow */
+  /* Sun icon: slides down, full yellow, soft glow, add pop */
   opacity: 1;
-  transform: translateY(2.2px) scale(1.13) rotate(2deg);
-  filter: drop-shadow(0 0 4px #FFD166aa);
+  transform: translateY(2.2px) scale(1.17) rotate(2deg);
+  filter: drop-shadow(0 0 5.2px #FFD166bb);
+  transition: 
+    opacity 0.21s cubic-bezier(.54,.18,.3,1),
+    transform 0.29s cubic-bezier(.82,.18,.3,1.11),
+    filter 0.20s;
 }
 
 /* Mode label ("Light"/"Dark") next to toggle */
