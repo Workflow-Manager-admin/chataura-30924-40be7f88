@@ -1,25 +1,21 @@
-import React, { useEffect, useRef, useContext } from "react";
+import React, { useEffect, useRef, useContext, useState, useCallback } from "react";
 import { ThemeContext } from "./App";
 
-// PUBLIC_INTERFACE
 /**
- * NavBar component for TalkBuddy
- * Fixed, responsive top navigation with logo, links, and a visually-clear, animated dark/light toggle.
- * - Toggle shows distinct track/knob colors in each mode, syncs instantly, and is smooth.
- * - ARIA, keyboard, and color/animation details refined for maximal clarity.
+ * NavBar component for TalkBuddy - Updated
+ * - Removes Home/About links, keeps only logo, dark/light toggle, and adds a Settings (gear) icon with a modern dropdown.
+ * - Dropdown: About Us, Contact, Help; keyboard- and screen-reader-accessible, closes on outside click, theme-aware.
  */
-const NAV_ITEMS = [
-  { label: "Home", href: "#home" },
-  { label: "Chat", href: "#chat" },
-  { label: "About", href: "#about" },
-];
-
+// PUBLIC_INTERFACE
 const POPPINS_FONT_URL =
   "https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Raleway:wght@600;700&display=swap";
 
 export default function NavBar() {
   const { theme, setTheme } = useContext(ThemeContext);
   const switchButtonRef = useRef();
+  const settingsRef = useRef();
+  const [isMenuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef();
 
   // Insert font for header if missing
   useEffect(() => {
@@ -33,12 +29,12 @@ export default function NavBar() {
   }, []);
 
   // Theme toggle handler (update via context)
-  function handleThemeToggle() {
+  const handleThemeToggle = useCallback(() => {
     setTheme((t) => (t === "dark" ? "light" : "dark"));
-  }
+  }, [setTheme]);
 
   // Keyboard accessibility and animation burst
-  function handleKeyDown(e) {
+  function handleToggleKeyDown(e) {
     if (e.key === " " || e.key === "Enter" || e.code === "Space") {
       e.preventDefault();
       handleThemeToggle();
@@ -50,6 +46,93 @@ export default function NavBar() {
       }
     }
   }
+
+  // Handle Settings dropdown (open/close, accessibility)
+  function handleSettingsClick(e) {
+    setMenuOpen((open) => !open);
+  }
+  function handleSettingsKeyDown(e) {
+    if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+      e.preventDefault();
+      setMenuOpen(true);
+      // Focus first menu item after open
+      setTimeout(() => {
+        if (menuRef.current) {
+          const first = menuRef.current.querySelector('[tabIndex="0"]');
+          if (first) first.focus();
+        }
+      }, 10);
+    } else if (e.key === "Escape") {
+      setMenuOpen(false);
+      settingsRef.current?.focus();
+    }
+  }
+
+  // Keyboard navigation for dropdown menu
+  function handleMenuKeyDown(e) {
+    const menuItems = Array.from(menuRef.current.querySelectorAll('[role="menuitem"]'));
+    const idx = menuItems.indexOf(document.activeElement);
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const next = (idx + 1) % menuItems.length;
+      menuItems[next].focus();
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const prev = (idx - 1 + menuItems.length) % menuItems.length;
+      menuItems[prev].focus();
+    } else if (e.key === "Tab") {
+      setMenuOpen(false); // close on tab out
+    } else if (e.key === "Escape") {
+      setMenuOpen(false);
+      settingsRef.current?.focus();
+    }
+  }
+
+  // Closes dropdown on outside click or blur or theme update
+  useEffect(() => {
+    function onDocClick(e) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target) &&
+        settingsRef.current &&
+        !settingsRef.current.contains(e.target)
+      ) {
+        setMenuOpen(false);
+      }
+    }
+    if (isMenuOpen) {
+      document.addEventListener("mousedown", onDocClick);
+    }
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, [isMenuOpen]);
+
+  // Hide menu on theme change to avoid color mismatch or staleness
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [theme]);
+
+  // Dropdown menu content
+  const settingsMenu = (
+    <ul
+      className={`tb-settings-dropdown tb-dropdown-${theme}`}
+      ref={menuRef}
+      role="menu"
+      aria-label="Settings Dropdown"
+      tabIndex={-1}
+      style={{ display: isMenuOpen ? "block" : "none" }}
+      onKeyDown={handleMenuKeyDown}
+    >
+      <li role="menuitem" tabIndex={0}>
+        <a href="#about" onClick={() => setMenuOpen(false)} tabIndex={0}>About Us</a>
+      </li>
+      <li role="menuitem" tabIndex={0}>
+        <a href="#contact" onClick={() => setMenuOpen(false)} tabIndex={0}>Contact</a>
+      </li>
+      <li role="menuitem" tabIndex={0}>
+        <a href="#help" onClick={() => setMenuOpen(false)} tabIndex={0}>Help</a>
+      </li>
+    </ul>
+  );
 
   return (
     <nav
@@ -67,82 +150,110 @@ export default function NavBar() {
           TalkBuddy
         </div>
 
-        {/* Navigation Links */}
-        <ul className="tb-nav-links" aria-label="Site sections">
-          {NAV_ITEMS.map(({ label, href }) => (
-            <li key={label}>
-              <a
-                href={href}
-                className="tb-nav-link"
-                tabIndex={0}
-                aria-label={label}
-              >
-                {label}
-              </a>
-            </li>
-          ))}
-        </ul>
+        {/* Settings + Theme */}
+        <div className="tb-navbar-actions">
+          {/* Settings Icon with Dropdown */}
+          <div className="tb-settings-wrapper">
+            <button
+              ref={settingsRef}
+              className={`tb-settings-btn${isMenuOpen ? " tb-settings-btn--active" : ""}`}
+              aria-haspopup="menu"
+              aria-expanded={isMenuOpen}
+              aria-controls="tb-settings-dropdown"
+              aria-label={isMenuOpen ? "Close settings menu" : "Open settings menu"}
+              tabIndex={0}
+              onClick={handleSettingsClick}
+              onKeyDown={handleSettingsKeyDown}
+              type="button"
+            >
+              {/* Gear icon SVG */}
+              <span className="tb-settings-gear" aria-hidden="true">
+                <svg width="23" height="23" viewBox="0 0 23 23" fill="none">
+                  <g
+                    stroke={theme === "dark" ? "#FFD166" : "#4F8CFF"}
+                    strokeWidth="1.48"
+                    strokeLinecap="round"
+                  >
+                    <circle
+                      cx="11.5"
+                      cy="11.5"
+                      r="3.5"
+                      fill={theme === "dark" ? "#23272F" : "#fff"}
+                    />
+                    <path d="M11.5 2v2.2"/>
+                    <path d="M11.5 21v-2.2"/>
+                    <path d="M21 11.5h-2.2"/>
+                    <path d="M2 11.5h2.2"/>
+                    <path d="M17.3 5.7l-1.5 1.5"/>
+                    <path d="M5.7 5.7l1.5 1.5"/>
+                    <path d="M17.3 17.3l-1.5-1.5"/>
+                    <path d="M5.7 17.3l1.5-1.5"/>
+                  </g>
+                </svg>
+              </span>
+            </button>
+            {settingsMenu}
+          </div>
 
-        {/* Enhanced Theme Toggle Switch - visually clear, instant, animated */}
-        <div className="tb-theme-toggle-switch-container">
-          <div
-            ref={switchButtonRef}
-            className={
-              "tb-theme-toggle-switch--custom" +
-              (theme === "dark" ? " is-dark" : " is-light")
-            }
-            role="switch"
-            aria-checked={theme === "dark"}
-            aria-label={
-              theme === "dark"
-                ? "Switch to light mode"
-                : "Switch to dark mode"
-            }
-            tabIndex={0}
-            onClick={handleThemeToggle}
-            onKeyDown={handleKeyDown}
-            style={{ outline: "none" }}
-          >
-            {/* TRACK */}
-            <div className="tb-switch-track" aria-hidden="true">
-              {/* SLIDING KNOB */}
-              <div className="tb-switch-knob">
-                <span className="tb-switch-icon" aria-hidden="true">
-                  {/* Icon animates - moon or sun */}
-                  {theme === "dark" ? (
-                    // Modern moon SVG for dark
-                    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-                      <path
-                        d="M13.1 11.97A5.5 5.5 0 018.36 4.8a.3.3 0 00-.34-.42A7 7 0 1017 14.34a.3.3 0 00-.41-.33 5.47 5.47 0 01-3.49-2.04z"
-                        fill="#FFD166"
-                      />
-                    </svg>
-                  ) : (
-                    // Modern sun SVG for light
-                    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-                      <circle cx="9" cy="9" r="4" fill="#FFD166"/>
-                      <g stroke="#FFD166" strokeWidth="1.2" strokeLinecap="round">
-                        <line x1="9" y1="1.8" x2="9" y2="0.2" />
-                        <line x1="9" y1="16.2" x2="9" y2="17.8" />
-                        <line x1="2.23" y1="2.23" x2="1.13" y2="1.13" />
-                        <line x1="15.77" y1="15.77" x2="16.87" y2="16.87" />
-                        <line x1="1.8" y1="9" x2="0.2" y2="9" />
-                        <line x1="16.2" y1="9" x2="17.8" y2="9" />
-                        <line x1="2.23" y1="15.77" x2="1.13" y2="16.87" />
-                        <line x1="15.77" y1="2.23" x2="16.87" y2="1.13" />
-                      </g>
-                    </svg>
-                  )}
-                </span>
+          {/* Enhanced Theme Toggle */}
+          <div className="tb-theme-toggle-switch-container">
+            <div
+              ref={switchButtonRef}
+              className={
+                "tb-theme-toggle-switch--custom" +
+                (theme === "dark" ? " is-dark" : " is-light")
+              }
+              role="switch"
+              aria-checked={theme === "dark"}
+              aria-label={
+                theme === "dark"
+                  ? "Switch to light mode"
+                  : "Switch to dark mode"
+              }
+              tabIndex={0}
+              onClick={handleThemeToggle}
+              onKeyDown={handleToggleKeyDown}
+              style={{ outline: "none" }}
+            >
+              {/* TRACK */}
+              <div className="tb-switch-track" aria-hidden="true">
+                {/* SLIDING KNOB */}
+                <div className="tb-switch-knob">
+                  <span className="tb-switch-icon" aria-hidden="true">
+                    {/* Icon animates - moon or sun */}
+                    {theme === "dark" ? (
+                      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+                        <path
+                          d="M13.1 11.97A5.5 5.5 0 018.36 4.8a.3.3 0 00-.34-.42A7 7 0 1017 14.34a.3.3 0 00-.41-.33 5.47 5.47 0 01-3.49-2.04z"
+                          fill="#FFD166"
+                        />
+                      </svg>
+                    ) : (
+                      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+                        <circle cx="9" cy="9" r="4" fill="#FFD166"/>
+                        <g stroke="#FFD166" strokeWidth="1.2" strokeLinecap="round">
+                          <line x1="9" y1="1.8" x2="9" y2="0.2" />
+                          <line x1="9" y1="16.2" x2="9" y2="17.8" />
+                          <line x1="2.23" y1="2.23" x2="1.13" y2="1.13" />
+                          <line x1="15.77" y1="15.77" x2="16.87" y2="16.87" />
+                          <line x1="1.8" y1="9" x2="0.2" y2="9" />
+                          <line x1="16.2" y1="9" x2="17.8" y2="9" />
+                          <line x1="2.23" y1="15.77" x2="1.13" y2="16.87" />
+                          <line x1="15.77" y1="2.23" x2="16.87" y2="1.13" />
+                        </g>
+                      </svg>
+                    )}
+                  </span>
+                </div>
               </div>
+              <span className="tb-switch-label">
+                {theme === "dark" ? "Dark" : "Light"}
+              </span>
             </div>
-            <span className="tb-switch-label">
-              {theme === "dark" ? "Dark" : "Light"}
-            </span>
           </div>
         </div>
       </div>
-      {/* Keep most style in NavBar.css, but patch in font + some nav bar responsiveness here */}
+      {/* Additional style for dropdown/settings - with theme awareness */}
       <style>{`
         @import url('${POPPINS_FONT_URL}');
         .tb-navbar {
@@ -164,20 +275,28 @@ export default function NavBar() {
         .tb-navbar[data-theme="light"] {
           --tb-navbar-bg: rgb(208, 204, 199);
           --tb-navbar-text: #23272F;
-          --tb-navbar-link: #23272F;
           --tb-navbar-link-hover: #4F8CFF;
           --tb-navbar-logo: #212121;
-          --tb-navbar-link-underline: #FFD166;
-          --tb-shadow: 0 2px 12px 0 rgba(130,110,80,0.08);
+          --tb-navbar-btn-bg: #ffffff;
+          --tb-settings-menu-bg: #f9f8f5;
+          --tb-settings-menu-item: #23272F;
+          --tb-settings-menu-item-hover: #4F8CFF;
+          --tb-settings-gear-bg: #f3efe7;
+          --tb-settings-gear-shadow: 0 1.5px 7px #4F8CFF19;
+          --tb-settings-gear-accent: #FFD166;
         }
         .tb-navbar[data-theme="dark"] {
           --tb-navbar-bg: linear-gradient(to right, #000000, #1a1a1a, #333333);
           --tb-navbar-text: #fff;
-          --tb-navbar-link: #F1F4FF;
           --tb-navbar-link-hover: #FFD166;
           --tb-navbar-logo: #FFD166;
-          --tb-navbar-link-glow: #FFD16633;
-          --tb-shadow: 0 3px 22px 2px rgba(33,33,66,0.18);
+          --tb-navbar-btn-bg: #181B23;
+          --tb-settings-menu-bg: #20273b;
+          --tb-settings-menu-item: #FFD166;
+          --tb-settings-menu-item-hover: #4F8CFF;
+          --tb-settings-gear-bg: #23272F;
+          --tb-settings-gear-shadow: 0 3px 13px #FFD16616;
+          --tb-settings-gear-accent: #FFD166;
         }
         .tb-navbar-inner {
           max-width: 1200px;
@@ -205,102 +324,111 @@ export default function NavBar() {
           font-size: 2.4rem;
           color: var(--tb-navbar-link-hover);
         }
-        .tb-nav-links {
+        .tb-navbar-actions {
           display: flex;
-          list-style: none;
-          gap: 2.2rem;
-          margin: 0;
-          padding: 0;
-        }
-        .tb-nav-link {
-          color: var(--tb-navbar-link);
-          font-size: 1.06rem;
-          font-weight: 600;
-          text-decoration: none;
-          letter-spacing: 0.03em;
-          padding: 5px 0;
-          position: relative;
-          transition: color 0.25s, text-shadow 0.33s;
-          outline: none;
-          border-radius: 2px;
-        }
-        .tb-nav-link:focus { 
-          box-shadow: 0 0 0 2px var(--tb-navbar-link-hover);
-        }
-        .tb-navbar[data-theme="light"] .tb-nav-link:hover,
-        .tb-navbar[data-theme="light"] .tb-nav-link:focus {
-          color: var(--tb-navbar-link-hover);
-        }
-        .tb-navbar[data-theme="light"] .tb-nav-link:hover::after,
-        .tb-navbar[data-theme="light"] .tb-nav-link:focus::after {
-          content: '';
-          position: absolute;
-          left: 0; right: 0; bottom: -2px; height: 2.5px;
-          background: var(--tb-navbar-link-underline);
-          border-radius: 1.5px;
-          opacity: .95;
-          transition: background 220ms cubic-bezier(0.22,0.57,0.21,1);
-        }
-        .tb-navbar[data-theme="dark"] .tb-nav-link:hover,
-        .tb-navbar[data-theme="dark"] .tb-nav-link:focus {
-          color: var(--tb-navbar-link-hover);
-          text-shadow: 0 0 9px var(--tb-navbar-link-glow);
-        }
-        .tb-navbar[data-theme="dark"] .tb-nav-link:hover::after,
-        .tb-navbar[data-theme="dark"] .tb-nav-link:focus::after {
-          content: '';
-          position: absolute;
-          left: 0; right: 0; bottom: -3px; height: 2.2px;
-          background: var(--tb-navbar-link-hover);
-          border-radius: 1px;
-          filter: blur(1.2px);
-          opacity: 0.79;
-          box-shadow: 0 0 12px var(--tb-navbar-link-glow);
+          align-items: center;
+          gap: 0.65rem;
         }
 
-        .tb-theme-toggle-icon {
-          display: inline-flex;
+        .tb-settings-wrapper {
+          position: relative;
+          margin-right: 0.83rem;
+          display: flex;
+          align-items: center;
+        }
+        .tb-settings-btn {
+          background: var(--tb-settings-gear-bg, #fff);
+          border: none;
+          border-radius: 50%;
+          width: 37px;
+          height: 37px;
+          display: flex;
           align-items: center;
           justify-content: center;
+          box-shadow: var(--tb-settings-gear-shadow, 0 1.5px 7px #4F8CFF12);
           cursor: pointer;
-          padding: 4px 10px;
-          border-radius: 50%;
           outline: none;
-          user-select: none;
-          color: var(--tb-navbar-link-hover);
-          transition: filter 0.22s, background 0.18s;
+          transition: filter 0.2s, box-shadow 0.19s, background 0.21s;
+          position: relative;
         }
-        .tb-theme-toggle-icon:hover,
-        .tb-theme-toggle-icon:focus {
-          background: rgba(255, 209, 102, 0.14);
-          filter: brightness(0.92) drop-shadow(0 0 7px #FFD16655);
-          outline: 2px solid var(--tb-navbar-link-hover);
+        .tb-settings-btn:focus,
+        .tb-settings-btn--active {
+          filter: brightness(0.97) drop-shadow(0 0 5px var(--tb-settings-gear-accent,#FFD166));
+          box-shadow: 0 0 0 2.5px var(--tb-navbar-link-hover,#4F8CFF);
+          background: var(--tb-navbar-btn-bg,#fff);
         }
-        .tb-theme-toggle-icon:active {
-          filter: brightness(0.87);
+        .tb-settings-btn:active {
+          filter: brightness(0.91);
         }
-        .tb-theme-icon {
-          vertical-align: middle;
-        }
-        /* Add subtle burst for pressed state of switch */
-        .tb-theme-toggle-switch--custom.tb-switch-pressed .tb-switch-knob {
-          animation: tb-switch-press-burst 0.22s cubic-bezier(.3,1.6,.51,1.01);
-        }
-        @keyframes tb-switch-press-burst {
-          0% { box-shadow: 0 3px 14px #FFD16633, 0 0 0 0 #FFD16644; }
-          50% { box-shadow: 0 6px 22px #FFD166aa, 0 0 0 8px #FFD16622; }
-          100% { box-shadow: 0 3px 9px #3333ff19, 0 1.4px 0 #FFD16677; }
+        .tb-settings-gear svg {
+          display: block;
         }
 
+        .tb-settings-dropdown {
+          position: absolute;
+          top: 45px;
+          right: 1px;
+          background: var(--tb-settings-menu-bg, #fff);
+          color: var(--tb-settings-menu-item, #23272F);
+          border: 1.3px solid var(--tb-navbar-link-hover,#4F8CFF);
+          box-shadow: 0 8px 20px 0 #4F8CFF22, 0 2px 10px #FFD16618;
+          padding: 0.65rem 0;
+          border-radius: 13px;
+          min-width: 148px;
+          z-index: 2012;
+          font-family: "Poppins", "Raleway", Arial, sans-serif;
+          transition: background 0.34s, color 0.28s;
+          outline: none;
+        }
+        .tb-settings-dropdown li {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+        .tb-settings-dropdown li a {
+          display: block;
+          width: 100%;
+          color: var(--tb-settings-menu-item,#23272F);
+          font-weight: 600;
+          font-size: 1.02rem;
+          padding: 0.62em 1.11em;
+          text-decoration: none;
+          border-radius: 7px;
+          cursor: pointer;
+          transition: background 0.17s, color 0.12s;
+          outline: none;
+        }
+        .tb-settings-dropdown li a:focus, .tb-settings-dropdown li a:hover,
+        .tb-settings-dropdown li[aria-selected="true"] > a {
+          background: var(--tb-settings-menu-item-hover, #FFD166);
+          color: #fff;
+        }
+        .tb-settings-dropdown li:last-child a {
+          border-bottom: none;
+        }
+        .tb-settings-dropdown li:not(:last-child) a {
+          margin-bottom: 2px;
+        }
+        /* Hide dropdown when closed */
+        .tb-settings-dropdown[style*="display: none"] {
+          pointer-events: none;
+        }
+
+        /* Added drop shadow in both themes, extra for dark */
+        .tb-dropdown-dark {
+          box-shadow: 0 10px 32px #FFD16611,0 3px 12px #4F8CFF18,0 9px 26px #FFD16612;
+        }
+        .tb-dropdown-light {
+          box-shadow: 0 6px 19px #4F8CFF19, 0 2px 13px #FFD16613;
+        }
+
+        /* Responsive & A11y tweaks */
         @media (max-width: 800px) {
           .tb-navbar-inner {
             padding: 0 16px;
           }
           .tb-logo {
             font-size: 1.35rem;
-          }
-          .tb-nav-links {
-            gap: 1.2rem;
           }
         }
         @media (max-width: 480px) {
@@ -312,12 +440,12 @@ export default function NavBar() {
             min-width: 0;
             margin-right: 5px;
           }
-          .tb-nav-links {
-            gap: 0.5rem;
-          }
           .tb-theme-toggle {
             font-size: 1.23rem;
             padding: 4px;
+          }
+          .tb-settings-btn {
+            width: 32px; height: 32px;
           }
         }
       `}</style>
