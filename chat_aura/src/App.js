@@ -90,16 +90,10 @@ export function ThemeProvider({ children }) {
 
 // PUBLIC_INTERFACE
 function App() {
+  // For now, render HomePage as the main chat route (replace later with real routing if needed)
   return (
     <ThemeProvider>
-      <div className="app">
-        <NavBar />
-        <main>
-          <LandingHero />
-          <LandingFeatures />
-        </main>
-        <Footer />
-      </div>
+      <HomePage />
     </ThemeProvider>
   );
 }
