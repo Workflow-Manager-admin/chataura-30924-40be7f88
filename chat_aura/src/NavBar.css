@@ -117,13 +117,22 @@
 /* Mode label ("Light"/"Dark") next to toggle */
 .tb-switch-label {
   margin-left: 7px;
-  font-weight: 600;
+  font-weight: 800;
   color: var(--tb-navbar-text, #23272F);
   letter-spacing: 0.04em;
   min-width: 46px;
-  transition: color 0.18s;
-  user-select: none;
   font-size: 1.00rem;
+  transition: color 0.18s, text-shadow 0.16s;
+  user-select: none;
+  text-shadow: 0 1.5px 4px #FFD16619;
+}
+.tb-theme-toggle-switch--custom.is-dark .tb-switch-label {
+  color: #FFD166;
+  text-shadow: 0 0 5px #23272F, 0 0 6.5px #FFD16644;
+}
+.tb-theme-toggle-switch--custom.is-light .tb-switch-label {
+  color: #23272F;
+  text-shadow: 0 1.5px 4.5px #FFD16633;
 }
 
 /* Responsive: shrink for mobile */
