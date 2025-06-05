@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useMemo, createContext, useCallback } from 'react';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css';
 import NavBar from './NavBar';
 import LandingHero from './LandingHero';
 import LandingFeatures from './LandingFeatures';
 import Footer from './Footer';
-import ChatPage from './ChatPage'; // Added import
+import ChatPage from './ChatPage';
 import './landing.css';
 
 // PUBLIC_INTERFACE
