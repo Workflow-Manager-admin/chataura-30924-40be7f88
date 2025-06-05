@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo, createContext, useCallback } from 'react';
+// Ensure single named import ONLY for react-router-dom v6 API
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import './App.css';
