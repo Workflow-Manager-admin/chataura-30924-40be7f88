@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, createContext, useCallback } from 'react';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import './App.css';
 import NavBar from './NavBar';
 import LandingHero from './LandingHero';
@@ -92,7 +92,7 @@ export function ThemeProvider({ children }) {
  * PUBLIC_INTERFACE
  * App's root: renders HomePage (dashboard) as main entry.
  */
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 
 function App() {
   return (
