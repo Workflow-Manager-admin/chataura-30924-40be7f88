@@ -91,16 +91,31 @@ export function ThemeProvider({ children }) {
  * PUBLIC_INTERFACE
  * App's root: renders HomePage (dashboard) as main entry.
  */
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 function App() {
   return (
     <ThemeProvider>
-      {/* Strict landing page flow: NavBar (fixed), hero, features, footer */}
-      <NavBar />
-      <main>
-        <LandingHero />
-        <LandingFeatures />
-      </main>
-      <Footer />
+      <Router>
+        <Routes>
+          {/* Chat page at /chat */}
+          <Route path="/chat" element={<ChatPage />} />
+          {/* Main landing page at / */}
+          <Route
+            path="/"
+            element={
+              <>
+                <NavBar />
+                <main>
+                  <LandingHero />
+                  <LandingFeatures />
+                </main>
+                <Footer />
+              </>
+            }
+          />
+        </Routes>
+      </Router>
     </ThemeProvider>
   );
 }
