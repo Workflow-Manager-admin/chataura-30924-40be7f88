@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useContext } from "react";
+import { ThemeContext } from "./App";
 
 // PUBLIC_INTERFACE
 /**
@@ -16,35 +17,8 @@ const NAV_ITEMS = [
 const POPPINS_FONT_URL =
   "https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Raleway:wght@600;700&display=swap";
 
-/**
- * PUBLIC_INTERFACE
- * Custom React hook to manage and sync light/dark theme for the site.
- * Updates `body[data-theme]` and localStorage instantly.
- */
-function usePreferredTheme() {
-  // Theme initialization: check localStorage, then OS preference, fallback to light.
-  const [theme, setTheme] = useState(
-    () =>
-      localStorage.getItem("talkbuddy-theme") ||
-      (window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light")
-  );
-
-  useEffect(() => {
-    document.body.dataset.theme = theme;
-    localStorage.setItem("talkbuddy-theme", theme);
-
-    // Optionally, trigger a window event for future: could let other components directly sync
-    window.dispatchEvent(new CustomEvent("theme-updated", { detail: { theme } }));
-  }, [theme]);
-
-  return [theme, setTheme];
-}
-
 export default function NavBar() {
-  const [theme, setTheme] = usePreferredTheme();
+  const { theme, setTheme } = useContext(ThemeContext);
   const switchButtonRef = useRef();
 
   // Insert font for header if missing
@@ -58,17 +32,16 @@ export default function NavBar() {
     }
   }, []);
 
-  // Enhanced keyboard accessibility: focus ring and immediate toggle
+  // Theme toggle handler (update via context)
   function handleThemeToggle() {
     setTheme((t) => (t === "dark" ? "light" : "dark"));
   }
 
-  // Make interaction instant and keyboard-optimized
+  // Keyboard accessibility and animation burst
   function handleKeyDown(e) {
     if (e.key === " " || e.key === "Enter" || e.code === "Space") {
       e.preventDefault();
       handleThemeToggle();
-      // Optional: flash animation on space/enter (for feedback)
       if (switchButtonRef.current) {
         switchButtonRef.current.classList.add("tb-switch-pressed");
         setTimeout(() => {

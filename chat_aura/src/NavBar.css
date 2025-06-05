@@ -58,11 +58,11 @@
   border: 1.3px solid #ffe281;
 }
 .tb-theme-toggle-switch--custom.is-dark .tb-switch-track {
-  /* Clearly dark - deep blue and accent right edge */
-  background: linear-gradient(89deg, #1A2037 72%, #FFD166 100%);
-  box-shadow: 0 1.5px 7px #23272Faa, 0 0 0 2px #FFD166bb;
+  /* Even more visually clear: deepen blue for dark, raise contrast with yellow edge */
+  background: linear-gradient(91deg, #222740 70%, #FFD166 100%);
+  box-shadow: 0 2px 10px #10193ccc, 0 0 0 3px #ffd166bb;
   outline: 2.2px solid #FFD166;
-  border: 1.3px solid #23272f;
+  border: 1.7px solid #171f3b;
 }
 
 /* === Enhanced sliding knob: bold, bright edge, crisp shadow. Motion softened === */
