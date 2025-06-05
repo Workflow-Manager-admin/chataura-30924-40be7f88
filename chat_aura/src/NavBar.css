@@ -90,25 +90,34 @@
 }
 
 .tb-theme-toggle-switch--custom.is-dark .tb-switch-knob {
-  /* Slide right, bold yellow, strong glow & drop-shadow */
-  transform: translateX(17px) scale(1.1);
+  /* Slide right, bolder yellow, deeper shadow, smoother expansion, slightly "pop" in motion */
+  transform: translateX(17px) scale(1.13);
   background: #FFD166;
   box-shadow:
-    0 2.5px 18px #FFD166BB,
-    0 0 0 5px #FFD16633,
-    0 2.5px 0 #1a1a1a55;
-  outline: 2.5px solid #FFD166;
+    0 4px 22px #FFD166BB,
+    0 0 0 7px #FFD16628,
+    0 3.2px 0 #1a1a1a66;
+  outline: 2.7px solid #FFD166;
   border: 2.2px solid #FFFBEA;
+  transition:
+    transform 0.39s cubic-bezier(.74,.20,.24,1.18),
+    background 0.23s cubic-bezier(.55,.22,.22,1.1),
+    box-shadow 0.33s cubic-bezier(.54,.18,.3,1);
 }
 .tb-theme-toggle-switch--custom.is-light .tb-switch-knob {
-  /* Slide left, white, with accent ring */
-  transform: translateX(0) scale(1.01);
+  /* Slide left, white, bigger accent ring and extra highlight for clarity */
+  transform: translateX(0) scale(1.04);
   background: #fff;
   box-shadow:
-    0 1.5px 11px #FFD16633,
-    0 0 0 2.5px #FFD16644;
-  outline: 2.5px solid #FFD166;
-  border: 2.2px solid #FFECC2;
+    0 2px 13px #FFD1662d,
+    0 0 0 4.5px #FFD16633,
+    0 2.5px 0 #fffbeacc;
+  outline: 2.7px solid #FFD166;
+  border: 2.5px solid #FFECC2;
+  transition:
+    transform 0.39s cubic-bezier(.74,.20,.24,1.18),
+    background 0.23s cubic-bezier(.55,.22,.22,1.1),
+    box-shadow 0.33s cubic-bezier(.54,.18,.3,1);
 }
 
 
