@@ -34,59 +34,64 @@
 }
 
 /* Track (slide background) */
+/* === ENHANCED THEME TOGGLE STYLES === */
 .tb-switch-track {
-  width: 40px;
-  height: 22px;
+  width: 42px;
+  height: 23.5px;
   background: #FFD166;
   border-radius: 16px;
-  box-shadow: 0 1.5px 0 #FFD16640;
+  box-shadow: 0 2px 10px #FFD16644;
   display: inline-flex;
   align-items: center;
   position: relative;
   margin-right: 13px;
-  transition: background 0.22s cubic-bezier(.54,.18,.3,1),
-    box-shadow 0.22s;
+  transition: background 0.26s cubic-bezier(.65,.23,.24,.97), box-shadow 0.19s;
   will-change: background;
+  outline: 2.5px solid transparent;
 }
 .tb-theme-toggle-switch--custom.is-light .tb-switch-track {
-  background: #FFD166;
-  box-shadow: 0 1px 0 #FFD166cc;
+  background: linear-gradient(97deg, #FFD166 65%, #ffeec9 100%);
+  box-shadow: 0 2px 10px #FFD16677, 0 4px 18px #faebd780;
+  outline: 2.2px solid #FFD166;
 }
 .tb-theme-toggle-switch--custom.is-dark .tb-switch-track {
-  background: #23272F;
-  box-shadow: 0 0 0 1.7px #FFD16680;
+  background: linear-gradient(99deg, #162134 78%, #FFD166 97%);
+  box-shadow: 0 1.5px 7px #23272F88, 0 0 0 2px #FFD166cc;
+  outline: 2.2px solid #23272F;
 }
 
-/* SLIDING Knob: with icon, animated */
+/* Enhanced sliding knob: brighter halo, larger, dropshadow */
 .tb-switch-knob {
   position: absolute;
-  left: 3.0px;
-  top: 2.3px;
-  width: 17.5px;
-  height: 17.5px;
+  left: 2.6px;
+  top: 2px;
+  width: 18.5px;
+  height: 18.5px;
   background: #fff;
   border-radius: 50%;
-  box-shadow: 0 2px 7px 0 rgba(0,0,0,0.12);
+  box-shadow: 0 3px 9px #3333ff19, 0 1.4px 0 #FFD16677;
   display: flex;
   align-items: center;
   justify-content: center;
   transition:
-    transform 0.25s cubic-bezier(.74,.18,.3,1),
-    background 0.20s,
-    box-shadow 0.23s;
+    transform 0.32s cubic-bezier(.74,.18,.3,1),
+    background 0.20s, box-shadow 0.24s;
   will-change: transform, background;
   z-index: 2;
+  outline: 0 solid transparent;
 }
 .tb-theme-toggle-switch--custom.is-dark .tb-switch-knob {
-  /* SLIDE right for dark mode */
-  transform: translateX(16px);
+  /* SLIDE right for dark mode; glow with accent */
+  transform: translateX(17px) scale(1.09);
   background: #FFD166;
-  box-shadow: 0 1px 6px #23272F40;
+  box-shadow: 0 1px 9px #FFD166BB, 0 0 0 3px #FFD16688, 0 2.5px 0 #1a1a1a66;
+  outline: 2.5px solid #FFD166;
 }
 .tb-theme-toggle-switch--custom.is-light .tb-switch-knob {
   /* SLIDE left for light mode */
-  transform: translateX(0);
+  transform: translateX(0) scale(1);
   background: #fff;
+  outline: 2.5px solid #FFD166;
 }
 
 /* Icon animates inside knob */
