@@ -88,9 +88,11 @@ export function ThemeProvider({ children }) {
   );
 }
 
-// PUBLIC_INTERFACE
+/*
+ * PUBLIC_INTERFACE
+ * App's root: renders HomePage (dashboard) as main entry.
+ */
 function App() {
-  // For now, render HomePage as the main chat route (replace later with real routing if needed)
   return (
     <ThemeProvider>
       <HomePage />
