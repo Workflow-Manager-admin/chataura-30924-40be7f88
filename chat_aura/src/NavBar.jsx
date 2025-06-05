@@ -87,9 +87,18 @@ export default function NavBar() {
         </ul>
 
         {/* Theme Toggle */}
-        <button
-          className="tb-theme-toggle"
+        <span
+          className="tb-theme-toggle-icon"
           onClick={handleThemeToggle}
+          onKeyDown={e => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleThemeToggle();
+            }
+          }}
+          role="switch"
+          tabIndex={0}
+          aria-checked={theme === "dark"}
           aria-label={
             theme === "dark"
               ? "Switch to light mode"
@@ -97,10 +106,60 @@ export default function NavBar() {
           }
           title={theme === "dark" ? "Light mode" : "Dark mode"}
         >
-          <span className="tb-theme-icon" aria-hidden="true">
-            {theme === "dark" ? "🌗" : "🌖"}
-          </span>
-        </button>
+          {/* Sun/Moon SVG Icon */}
+          {theme === "dark" ? (
+            // Moon icon
+            <svg
+              className="tb-theme-icon"
+              width="27"
+              height="27"
+              viewBox="0 0 27 27"
+              aria-hidden="true"
+              focusable="false"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ verticalAlign: "middle", transition: "all 0.32s cubic-bezier(.58,.28,.39,1)" }}
+            >
+              <path
+                d="M13.5 3c-1.074 0-2.128.151-3.136.431a1 1 0 0 0-.123 1.857A8.5 8.5 0 1 1 4.713 10.76a1 1 0 0 0-1.855-.13A10.5 10.5 0 1 0 13.5 3z"
+                fill="#FFD166"
+                style={{ fill: "var(--tb-navbar-link-hover, #FFD166)" }}
+              />
+            </svg>
+          ) : (
+            // Sun icon
+            <svg
+              className="tb-theme-icon"
+              width="27"
+              height="27"
+              viewBox="0 0 27 27"
+              aria-hidden="true"
+              focusable="false"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ verticalAlign: "middle", transition: "all 0.32s cubic-bezier(.58,.28,.39,1)" }}
+            >
+              <circle
+                cx="13.5"
+                cy="13.5"
+                r="6"
+                fill="#FFD166"
+                style={{ fill: "var(--tb-navbar-link-hover, #FFD166)" }}
+              />
+              {/* Rays */}
+              <g stroke="var(--tb-navbar-link-hover, #FFD166)" strokeWidth="1.48" strokeLinecap="round">
+                <line x1="13.5" y1="3.2" x2="13.5" y2="7.1" />
+                <line x1="13.5" y1="20.9" x2="13.5" y2="24.8" />
+                <line x1="3.2" y1="13.5" x2="7.1" y2="13.5" />
+                <line x1="20.9" y1="13.5" x2="24.8" y2="13.5" />
+                <line x1="6.78" y1="6.78" x2="9.44" y2="9.44" />
+                <line x1="20.22" y1="20.22" x2="17.56" y2="17.56" />
+                <line x1="6.78" y1="20.22" x2="9.44" y2="17.56" />
+                <line x1="20.22" y1="6.78" x2="17.56" y2="9.44" />
+              </g>
+            </svg>
+          )}
+        </span>
       </div>
       <style>{`
         @import url('${POPPINS_FONT_URL}');
