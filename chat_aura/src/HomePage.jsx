@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { ThemeContext } from "./App";
+import { Link } from "react-router-dom";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 
@@ -116,9 +117,9 @@ export default function HomePage() {
               Enjoy natural conversations, daily insights, and total privacy.<br />
               <span style={{ fontWeight: 500, color: "var(--accent, #FFD166)" }}>Switch themes</span>, explore features, or <span style={{ fontWeight: 700 }}>start chatting now!</span>
             </div>
-            <a href="#chat" className="tb-dash-cta" tabIndex={0} role="button" aria-label="Start Chatting">
+            <Link to="/chat" className="tb-dash-cta" tabIndex={0} role="button" aria-label="Start Chatting">
               Start Chatting
-            </a>
+            </Link>
           </div>
           <div className="tb-dash-orb-bg" aria-hidden="true"></div>
         </div>
