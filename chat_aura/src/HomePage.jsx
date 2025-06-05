@@ -129,21 +129,37 @@ export default function HomePage() {
       <section className="tb-dash-features" id="features" aria-labelledby="tb-features-title">
         <h2 className="tb-dash-features-title" id="tb-features-title">Quick Access</h2>
         <div className="tb-dash-features-grid" role="list">
-          {features.map((f, i) => (
-            <a
-              className="tb-dash-feature-card"
-              key={f.title}
-              tabIndex={0}
-              href={f.href}
-              style={{ background: f.gradient }}
-              role="listitem"
-              aria-label={f.title + ": " + f.description}
-            >
-              <div className="tb-dash-feature-icon">{f.icon}</div>
-              <div className="tb-dash-feature-title">{f.title}</div>
-              <div className="tb-dash-feature-description">{f.description}</div>
-            </a>
-          ))}
+          {features.map((f, i) =>
+            f.href === "#chat" ? (
+              <Link
+                className="tb-dash-feature-card"
+                key={f.title}
+                tabIndex={0}
+                to="/chat"
+                style={{ background: f.gradient }}
+                role="listitem"
+                aria-label={f.title + ": " + f.description}
+              >
+                <div className="tb-dash-feature-icon">{f.icon}</div>
+                <div className="tb-dash-feature-title">{f.title}</div>
+                <div className="tb-dash-feature-description">{f.description}</div>
+              </Link>
+            ) : (
+              <a
+                className="tb-dash-feature-card"
+                key={f.title}
+                tabIndex={0}
+                href={f.href}
+                style={{ background: f.gradient }}
+                role="listitem"
+                aria-label={f.title + ": " + f.description}
+              >
+                <div className="tb-dash-feature-icon">{f.icon}</div>
+                <div className="tb-dash-feature-title">{f.title}</div>
+                <div className="tb-dash-feature-description">{f.description}</div>
+              </a>
+            )
+          )}
         </div>
       </section>
 
