@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 // PUBLIC_INTERFACE
 /**
  * NavBar component for TalkBuddy
- * Fixed, responsive top navigation with logo, links, and dark/light toggle.
- * - Left: Logo ("💬 TalkBuddy") in bold, Poppins/Raleway font.
- * - Center/Right: Home, Chat, About navigation links.
- * - Far right: dark/light mode toggle (🌗 icon, functional).
- * - Adapt styling for light/dark.
- * - Smooth transitions, focus styling, accessible.
+ * Fixed, responsive top navigation with logo, links, and a visually-clear, animated dark/light toggle.
+ * - Toggle shows distinct track/knob colors in each mode, syncs instantly, and is smooth.
+ * - ARIA, keyboard, and color/animation details refined for maximal clarity.
  */
 const NAV_ITEMS = [
   { label: "Home", href: "#home" },
@@ -19,8 +16,13 @@ const NAV_ITEMS = [
 const POPPINS_FONT_URL =
   "https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Raleway:wght@600;700&display=swap";
 
+/**
+ * PUBLIC_INTERFACE
+ * Custom React hook to manage and sync light/dark theme for the site.
+ * Updates `body[data-theme]` and localStorage instantly.
+ */
 function usePreferredTheme() {
-  // Detect prefers-color-scheme on mount
+  // Theme initialization: check localStorage, then OS preference, fallback to light.
   const [theme, setTheme] = useState(
     () =>
       localStorage.getItem("talkbuddy-theme") ||
@@ -29,17 +31,23 @@ function usePreferredTheme() {
         ? "dark"
         : "light")
   );
+
   useEffect(() => {
     document.body.dataset.theme = theme;
     localStorage.setItem("talkbuddy-theme", theme);
+
+    // Optionally, trigger a window event for future: could let other components directly sync
+    window.dispatchEvent(new CustomEvent("theme-updated", { detail: { theme } }));
   }, [theme]);
+
   return [theme, setTheme];
 }
 
 export default function NavBar() {
   const [theme, setTheme] = usePreferredTheme();
+  const switchButtonRef = useRef();
 
-  // Font loading: Insert Poppins/Raleway if not already present
+  // Insert font for header if missing
   useEffect(() => {
     if (!document.getElementById("talkbuddy-font-link")) {
       const link = document.createElement("link");
@@ -50,8 +58,24 @@ export default function NavBar() {
     }
   }, []);
 
+  // Enhanced keyboard accessibility: focus ring and immediate toggle
   function handleThemeToggle() {
     setTheme((t) => (t === "dark" ? "light" : "dark"));
+  }
+
+  // Make interaction instant and keyboard-optimized
+  function handleKeyDown(e) {
+    if (e.key === " " || e.key === "Enter" || e.code === "Space") {
+      e.preventDefault();
+      handleThemeToggle();
+      // Optional: flash animation on space/enter (for feedback)
+      if (switchButtonRef.current) {
+        switchButtonRef.current.classList.add("tb-switch-pressed");
+        setTimeout(() => {
+          switchButtonRef.current.classList.remove("tb-switch-pressed");
+        }, 220);
+      }
+    }
   }
 
   return (
@@ -86,9 +110,10 @@ export default function NavBar() {
           ))}
         </ul>
 
-        {/* Theme Toggle Switch - modern animated custom slide toggle */}
+        {/* Enhanced Theme Toggle Switch - visually clear, instant, animated */}
         <div className="tb-theme-toggle-switch-container">
           <div
+            ref={switchButtonRef}
             className={
               "tb-theme-toggle-switch--custom" +
               (theme === "dark" ? " is-dark" : " is-light")
@@ -102,18 +127,15 @@ export default function NavBar() {
             }
             tabIndex={0}
             onClick={handleThemeToggle}
-            onKeyDown={e => {
-              if (e.key === " " || e.key === "Enter") {
-                e.preventDefault();
-                handleThemeToggle();
-              }
-            }}
+            onKeyDown={handleKeyDown}
             style={{ outline: "none" }}
           >
+            {/* TRACK */}
             <div className="tb-switch-track" aria-hidden="true">
+              {/* SLIDING KNOB */}
               <div className="tb-switch-knob">
                 <span className="tb-switch-icon" aria-hidden="true">
-                  {/* Icon in knob animates with theme */}
+                  {/* Icon animates - moon or sun */}
                   {theme === "dark" ? (
                     // Modern moon SVG for dark
                     <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
@@ -147,6 +169,7 @@ export default function NavBar() {
           </div>
         </div>
       </div>
+      {/* Keep most style in NavBar.css, but patch in font + some nav bar responsiveness here */}
       <style>{`
         @import url('${POPPINS_FONT_URL}');
         .tb-navbar {
@@ -285,6 +308,15 @@ export default function NavBar() {
         }
         .tb-theme-icon {
           vertical-align: middle;
+        }
+        /* Add subtle burst for pressed state of switch */
+        .tb-theme-toggle-switch--custom.tb-switch-pressed .tb-switch-knob {
+          animation: tb-switch-press-burst 0.22s cubic-bezier(.3,1.6,.51,1.01);
+        }
+        @keyframes tb-switch-press-burst {
+          0% { box-shadow: 0 3px 14px #FFD16633, 0 0 0 0 #FFD16644; }
+          50% { box-shadow: 0 6px 22px #FFD166aa, 0 0 0 8px #FFD16622; }
+          100% { box-shadow: 0 3px 9px #3333ff19, 0 1.4px 0 #FFD16677; }
         }
 
         @media (max-width: 800px) {
