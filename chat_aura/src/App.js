@@ -4,6 +4,8 @@ import NavBar from './NavBar';
 import LandingHero from './LandingHero';
 import LandingFeatures from './LandingFeatures';
 import Footer from './Footer';
+import HomePage from './HomePage';
+import './ChatPage.css';
 import './landing.css';
 
 // PUBLIC_INTERFACE
