@@ -4,8 +4,6 @@ import NavBar from './NavBar';
 import LandingHero from './LandingHero';
 import LandingFeatures from './LandingFeatures';
 import Footer from './Footer';
-import HomePage from './HomePage';
-import './ChatPage.css';
 import './landing.css';
 
 // PUBLIC_INTERFACE
@@ -95,7 +93,13 @@ export function ThemeProvider({ children }) {
 function App() {
   return (
     <ThemeProvider>
-      <HomePage />
+      {/* Strict landing page flow: NavBar (fixed), hero, features, footer */}
+      <NavBar />
+      <main>
+        <LandingHero />
+        <LandingFeatures />
+      </main>
+      <Footer />
     </ThemeProvider>
   );
 }
