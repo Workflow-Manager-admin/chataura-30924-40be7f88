@@ -86,11 +86,10 @@ export default function NavBar() {
           ))}
         </ul>
 
-        {/* Theme Toggle Switch */}
+        {/* Theme Toggle Switch - custom animated & accessible */}
         <div className="tb-theme-toggle-switch-container">
-          <label
-            className="tb-theme-toggle-switch"
-            tabIndex={0}
+          <div
+            className={`tb-theme-toggle-switch tb-theme-toggle-switch--custom${theme === "dark" ? " is-dark" : " is-light"}`}
             role="switch"
             aria-checked={theme === "dark"}
             aria-label={
@@ -98,20 +97,52 @@ export default function NavBar() {
                 ? "Switch to light mode"
                 : "Switch to dark mode"
             }
+            tabIndex={0}
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            onKeyDown={e => {
+              if (e.key === " " || e.key === "Enter") {
+                e.preventDefault();
+                setTheme(theme === "dark" ? "light" : "dark");
+              }
+            }}
+            style={{ outline: "none" }}
           >
-            <input
-              type="checkbox"
-              checked={theme === "dark"}
-              onChange={() => setTheme(theme === "dark" ? "light" : "dark")}
-              aria-checked={theme === "dark"}
-              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-              tabIndex={-1}
-            />
-            <span className="tb-switch-slider" />
+            {/* Track & knob - dark and light icons animate inside */}
+            <div className="tb-switch-track">
+              <div className="tb-switch-knob">
+                <span className="tb-switch-icon" aria-hidden="true">
+                  {/* Simple CSS sun/moon icon */}
+                  {theme === "dark" ? (
+                    // Moon SVG
+                    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+                      <path
+                        d="M13.1 11.97A5.5 5.5 0 018.36 4.8a.3.3 0 00-.34-.42A7 7 0 1017 14.34a.3.3 0 00-.41-.33 5.47 5.47 0 01-3.49-2.04z"
+                        fill="#FFD166"
+                      />
+                    </svg>
+                  ) : (
+                    // Sun SVG
+                    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+                      <circle cx="9" cy="9" r="4" fill="#FFD166"/>
+                      <g stroke="#FFD166" strokeWidth="1.2" strokeLinecap="round">
+                        <line x1="9" y1="1.8" x2="9" y2="0.2" />
+                        <line x1="9" y1="16.2" x2="9" y2="17.8" />
+                        <line x1="2.23" y1="2.23" x2="1.13" y2="1.13" />
+                        <line x1="15.77" y1="15.77" x2="16.87" y2="16.87" />
+                        <line x1="1.8" y1="9" x2="0.2" y2="9" />
+                        <line x1="16.2" y1="9" x2="17.8" y2="9" />
+                        <line x1="2.23" y1="15.77" x2="1.13" y2="16.87" />
+                        <line x1="15.77" y1="2.23" x2="16.87" y2="1.13" />
+                      </g>
+                    </svg>
+                  )}
+                </span>
+              </div>
+            </div>
             <span className="tb-switch-label">
               {theme === "dark" ? "Dark" : "Light"}
             </span>
-          </label>
+          </div>
         </div>
       </div>
       <style>{`
