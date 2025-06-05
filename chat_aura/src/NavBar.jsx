@@ -276,20 +276,26 @@ export default function NavBar() {
           box-shadow: 0 0 12px var(--tb-navbar-link-glow);
         }
 
-        .tb-theme-toggle {
-          background: none;
-          border: none;
-          font-size: 1.7rem;
-          padding: 4px 10px;
+        .tb-theme-toggle-icon {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
           cursor: pointer;
-          color: var(--tb-navbar-link-hover);
-          transition: filter 0.26s, color 0.18s;
+          padding: 4px 10px;
           border-radius: 50%;
+          outline: none;
+          user-select: none;
+          color: var(--tb-navbar-link-hover);
+          transition: filter 0.22s, background 0.18s;
         }
-        .tb-theme-toggle:hover,
-        .tb-theme-toggle:focus {
-          filter: brightness(0.91) drop-shadow(0 0 8px #FFD16655);
+        .tb-theme-toggle-icon:hover,
+        .tb-theme-toggle-icon:focus {
+          background: rgba(255, 209, 102, 0.14);
+          filter: brightness(0.92) drop-shadow(0 0 7px #FFD16655);
           outline: 2px solid var(--tb-navbar-link-hover);
+        }
+        .tb-theme-toggle-icon:active {
+          filter: brightness(0.87);
         }
         .tb-theme-icon {
           vertical-align: middle;
