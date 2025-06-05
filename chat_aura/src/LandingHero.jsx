@@ -34,35 +34,39 @@ export default function LandingHero() {
           </a>
         </div>
         <div className="tb-hero-right" aria-hidden="true">
-          {/* Fluid blob background + animated ai-robot SVG */}
-          <div className="tb-hero-blob">
-            <svg width="250" height="220" viewBox="0 0 340 300" fill="none">
+          {/* Minimal modern chat bubble SVG with orb gradient background */}
+          <div className="tb-hero-bubble-outer">
+            <div className="tb-hero-animated-orb"></div>
+            <svg
+              className="tb-hero-chat-bubble"
+              width="133"
+              height="108"
+              viewBox="0 0 133 108"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
               <defs>
-                <linearGradient id="mainBlobGrad" x1="0" y1="0" x2="1" y2="1">
+                <linearGradient id="bubbleGrad" x1="0" y1="0" x2="1" y2="1">
                   <stop offset="0%" stopColor="#4F8CFF" />
-                  <stop offset="70%" stopColor="#FFD166" />
-                  <stop offset="100%" stopColor="#fff" />
+                  <stop offset="100%" stopColor="#FFD166" />
                 </linearGradient>
+                <filter id="bubbleShadow" x="-6" y="-6" width="145" height="120" filterUnits="userSpaceOnUse">
+                  <feDropShadow dx="0.5" dy="5" stdDeviation="7" floodColor="#23272f" floodOpacity="0.19" />
+                </filter>
               </defs>
-              <path d="M47.3,165.1Q32.1,230.3,90.9,242.8Q149.7,255.4,205,258Q260.3,260.6,282,211.9Q303.7,163.3,295.9,120.1Q288.2,76.8,243.5,40.9Q198.9,5,132.5,30.1Q66.2,55.2,47.3,165.1Z"
-                fill="url(#mainBlobGrad)" opacity="0.85" />
+              <path
+                d="M22 16C22 7.163 31.137 0 42.5 0H90.5C101.863 0 111 7.163 111 16V65C111 73.84 101.862 81 90.5 81H53.5L27.5 107V81H42.5C31.138 81 22 73.84 22 65V16Z"
+                fill="url(#bubbleGrad)"
+                filter="url(#bubbleShadow)"
+                style={{ transition: "fill 0.45s" }}
+                opacity="0.96"
+              />
+              {/* Simulate a message */}
+              <rect x="44" y="24" rx="4" width="45" height="10" fill="#fff" fillOpacity="0.92" />
+              <rect x="44" y="40" rx="4" width="35" height="8" fill="#fff" fillOpacity="0.74" />
+              <rect x="44" y="53" rx="3" width="22" height="7" fill="#fff" fillOpacity="0.5" />
             </svg>
-            <div className="tb-hero-bot-illus">
-              {/* Simple AI bot SVG, animated mouth */}
-              <svg width="76" height="68" viewBox="0 0 76 68">
-                <ellipse
-                  cx="38" cy="39.5" rx="27" ry="26"
-                  fill="#fff" opacity="0.97"
-                  style={{ filter: "drop-shadow(0 6px 32px #4F8CFF99)" }}
-                />
-                <ellipse cx="27" cy="32" rx="3.5" ry="4" fill="#23272F" />
-                <ellipse cx="49" cy="32" rx="3.5" ry="4" fill="#23272F" />
-                <rect x="31" y="46.5" width="14" height="5.5" rx="3" fill="#FFD166" style={{ transition: "all 0.3s" }}>
-                  <animate attributeName="y" values="46.5;47.5;46.5" dur="1.2s" repeatCount="indefinite" />
-                  <animate attributeName="height" values="5.5;7.5;5.5" dur="1.2s" repeatCount="indefinite" />
-                </rect>
-              </svg>
-            </div>
           </div>
         </div>
       </div>
