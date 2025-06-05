@@ -35,6 +35,7 @@
 
 /* Track (slide background) */
 /* === ENHANCED THEME TOGGLE STYLES === */
+/* === Track (slide background) -- refined for max clarity === */
 .tb-switch-track {
   width: 42px;
   height: 23.5px;
@@ -50,17 +51,21 @@
   outline: 2.5px solid transparent;
 }
 .tb-theme-toggle-switch--custom.is-light .tb-switch-track {
-  background: linear-gradient(97deg, #FFD166 65%, #ffeec9 100%);
-  box-shadow: 0 2px 10px #FFD16677, 0 4px 18px #faebd780;
+  /* Visibly light, warm accent and white hues */
+  background: linear-gradient(93deg, #FFD166 65%, #fff9e2 100%);
+  box-shadow: 0 2px 10px #ffd16688, 0 4px 22px #fff7c6cc;
   outline: 2.2px solid #FFD166;
+  border: 1.3px solid #ffe281;
 }
 .tb-theme-toggle-switch--custom.is-dark .tb-switch-track {
-  background: linear-gradient(99deg, #162134 78%, #FFD166 97%);
-  box-shadow: 0 1.5px 7px #23272F88, 0 0 0 2px #FFD166cc;
-  outline: 2.2px solid #23272F;
+  /* Clearly dark - deep blue and accent right edge */
+  background: linear-gradient(89deg, #1A2037 72%, #FFD166 100%);
+  box-shadow: 0 1.5px 7px #23272Faa, 0 0 0 2px #FFD166bb;
+  outline: 2.2px solid #FFD166;
+  border: 1.3px solid #23272f;
 }
 
-/* Enhanced sliding knob: brighter halo, larger, dropshadow */
+/* === Enhanced sliding knob: bold, bright edge, crisp shadow. Motion softened === */
 .tb-switch-knob {
   position: absolute;
   left: 2.6px;
@@ -69,30 +74,43 @@
   height: 18.5px;
   background: #fff;
   border-radius: 50%;
-  box-shadow: 0 3px 9px #3333ff19, 0 1.4px 0 #FFD16677;
+  box-shadow:
+    0 3px 14px #FFD16633,
+    0 1.4px 0 #FFD16699;
   display: flex;
   align-items: center;
   justify-content: center;
   transition:
-    transform 0.32s cubic-bezier(.74,.18,.3,1),
-    background 0.20s, box-shadow 0.24s;
-  will-change: transform, background;
+    transform 0.36s cubic-bezier(.74,.18,.3,1.09),
+    background 0.21s cubic-bezier(.54,.18,.3,1),
+    box-shadow 0.28s cubic-bezier(.54,.18,.3,1);
+  will-change: transform, background, box-shadow;
   z-index: 2;
   outline: 0 solid transparent;
 }
+
 .tb-theme-toggle-switch--custom.is-dark .tb-switch-knob {
-  /* SLIDE right for dark mode; glow with accent */
-  transform: translateX(17px) scale(1.09);
+  /* Slide right, bold yellow, strong glow & drop-shadow */
+  transform: translateX(17px) scale(1.1);
   background: #FFD166;
-  box-shadow: 0 1px 9px #FFD166BB, 0 0 0 3px #FFD16688, 0 2.5px 0 #1a1a1a66;
+  box-shadow:
+    0 2.5px 18px #FFD166BB,
+    0 0 0 5px #FFD16633,
+    0 2.5px 0 #1a1a1a55;
   outline: 2.5px solid #FFD166;
+  border: 2.2px solid #FFFBEA;
 }
 .tb-theme-toggle-switch--custom.is-light .tb-switch-knob {
-  /* SLIDE left for light mode */
-  transform: translateX(0) scale(1);
+  /* Slide left, white, with accent ring */
+  transform: translateX(0) scale(1.01);
   background: #fff;
+  box-shadow:
+    0 1.5px 11px #FFD16633,
+    0 0 0 2.5px #FFD16644;
   outline: 2.5px solid #FFD166;
+  border: 2.2px solid #FFECC2;
 }
+
 
 /* Icon animates inside knob */
 .tb-switch-icon {
