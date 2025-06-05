@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 /**
  * PUBLIC_INTERFACE
  * Hero section for TalkBuddy landing page.
@@ -25,15 +25,15 @@ export default function LandingHero() {
           <div className="tb-hero-desc">
             Ask anything, get instant, human-like responses. Secure, private, available 24/7. Try a <span style={{ fontWeight: 500, color: "var(--accent,#FFD166)" }}>smarter</span> chat today.
           </div>
-          <a
-            href="#chat"
+          <Link
+            to="/chat"
             className="tb-cta-btn"
             tabIndex={0}
             role="button"
             aria-label="Get Started with TalkBuddy"
           >
             Get Started
-          </a>
+          </Link>
         </div>
         <div className="tb-hero-right" aria-hidden="true">
           {/* Minimal modern chat bubble SVG with orb gradient background */}
